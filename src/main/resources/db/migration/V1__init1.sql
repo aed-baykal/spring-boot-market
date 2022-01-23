@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS orders (
     shipping_method SMALLINT NOT NULL ,
     address      TEXT NOT NULL ,
     contact_email VARCHAR(255) NOT NULL ,
-    creation_time TIMESTAMP NOT NULL ,
+    creation_time TIMESTAMP NOT NULL DEFAULT NOW(),
     deliver_time  TIMESTAMP,
     details       TEXT
 );

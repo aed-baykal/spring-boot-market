@@ -15,33 +15,33 @@ import ru.gb.springbootdemoapp.service.UserService;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-  private final UserService userService;
+    private final UserService userService;
 
-  public SecurityConfig(UserService userService) {
-    this.userService = userService;
-  }
+    public SecurityConfig(UserService userService) {
+        this.userService = userService;
+    }
 
-  @Bean
-  public DaoAuthenticationProvider authenticationProvider() {
-    DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-    provider.setPasswordEncoder(new BCryptPasswordEncoder());
-    provider.setUserDetailsService(userService);
-    return provider;
-  }
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(new BCryptPasswordEncoder());
+        provider.setUserDetailsService(userService);
+        return provider;
+    }
 
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    http.authorizeRequests()
-          .antMatchers("/admin/**").hasRole( "ADMIN")
-        .and()
-          .formLogin()
-          .loginPage("/login")
-        .and()
-          .logout()
-          .logoutSuccessUrl("/");
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers("/admin/**").hasRole( "ADMIN")
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .and()
+                .logout()
+                .logoutSuccessUrl("/");
 
-    // для консольи h2 - так не делают в продакшене
-    http.csrf().disable()
-        .headers().frameOptions().disable();
-  }
+        // для консольи h2 - так не делают в продакшене
+        http.csrf().disable()
+                .headers().frameOptions().disable();
+    }
 }
