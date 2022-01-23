@@ -18,8 +18,8 @@ CREATE TABLE IF NOT EXISTS users_authorities (
 
 CREATE TABLE IF NOT EXISTS customer_contacts (
     id      BIGSERIAL PRIMARY KEY,
-    email   VARCHAR(255),
-    address TEXT,
+    email   VARCHAR(255) NOT NULL,
+    address TEXT NOT NULL,
     customer_id BIGINT REFERENCES users (id)
 );
 
@@ -44,11 +44,11 @@ CREATE TABLE IF NOT EXISTS orders (
     id           BIGSERIAL PRIMARY KEY,
     customer_id  BIGINT REFERENCES customer_contacts (id),
     price        FLOAT NOT NULL ,
-    order_status SMALLINT,
-    shipping_method SMALLINT,
-    address      TEXT,
-    contact_email VARCHAR(255),
-    creation_time TIMESTAMP,
+    order_status SMALLINT NOT NULL ,
+    shipping_method SMALLINT NOT NULL ,
+    address      TEXT NOT NULL ,
+    contact_email VARCHAR(255) NOT NULL ,
+    creation_time TIMESTAMP NOT NULL ,
     deliver_time  TIMESTAMP,
     details       TEXT
 );
@@ -57,8 +57,8 @@ CREATE TABLE IF NOT EXISTS order_items (
     id BIGSERIAL PRIMARY KEY,
     orders_id BIGINT REFERENCES orders (id),
     product_id BIGINT REFERENCES products (id),
-    price DOUBLE,
-    quantity INT
+    price DOUBLE NOT NULL ,
+    quantity INT NOT NULL
 );
 
 
