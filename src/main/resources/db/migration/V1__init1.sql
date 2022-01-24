@@ -1,8 +1,15 @@
+CREATE TABLE IF NOT EXISTS customer_contacts (
+     id      BIGSERIAL PRIMARY KEY,
+     email   VARCHAR(255) NOT NULL,
+     address TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS users (
     id       BIGSERIAL PRIMARY KEY,
     login    VARCHAR(255) NOT NULL UNIQUE ,
     password VARCHAR(255) NOT NULL,
-    enabled  BOOLEAN NOT NULL DEFAULT false
+    enabled  BOOLEAN NOT NULL DEFAULT false,
+    customer_id BIGINT REFERENCES customer_contacts (id)
 );
 
 CREATE TABLE IF NOT EXISTS authorities (
@@ -14,13 +21,6 @@ CREATE TABLE IF NOT EXISTS users_authorities (
     user_id      BIGINT REFERENCES users (id),
     authority_id BIGINT REFERENCES authorities (id),
     PRIMARY KEY (user_id, authority_id)
-);
-
-CREATE TABLE IF NOT EXISTS customer_contacts (
-    id      BIGSERIAL PRIMARY KEY,
-    email   VARCHAR(255) NOT NULL,
-    address TEXT NOT NULL,
-    customer_id BIGINT REFERENCES users (id)
 );
 
 CREATE TABLE IF NOT EXISTS categories (
@@ -55,23 +55,23 @@ CREATE TABLE IF NOT EXISTS orders (
 
 CREATE TABLE IF NOT EXISTS order_items (
     id BIGSERIAL PRIMARY KEY,
-    orders_id BIGINT REFERENCES orders (id),
+    order_id BIGINT REFERENCES orders (id),
     product_id BIGINT REFERENCES products (id),
     price DOUBLE NOT NULL ,
     quantity INT NOT NULL
 );
 
 
-INSERT INTO users (login, password, enabled)
-VALUES
-    ('admin', '$2a$12$fIxG7VKFdJw9HriHgNyuNu.DitJytiDsERb25YAvhUEicllt37m0O', true),
-    ('manager', '$2a$12$.z4y.gN6zGcUMjU/USKMEedIinnVn.4xGonlD1.M2213psnAWqYW.', true),
-    ('user', '$2a$12$.z4y.gN6zGcUMjU/USKMEedIinnVn.4xGonlD1.M2213psnAWqYW.', true);
-
 INSERT INTO customer_contacts (email, address)
 VALUES ('admin@admin.ru', 'Электросталь, ул. Захарченко, 7А'),
-        ('manager@manager.ru', 'Электросталь, ул. Второва, 3'),
-        ('user@user.ru', 'Электросталь, Ул. Бульвар 60-летия Победы, 14');
+       ('manager@manager.ru', 'Электросталь, ул. Второва, 3'),
+       ('user@user.ru', 'Электросталь, Ул. Бульвар 60-летия Победы, 14');
+
+INSERT INTO users (login, password, enabled, customer_id)
+VALUES
+    ('admin', '$2a$12$fIxG7VKFdJw9HriHgNyuNu.DitJytiDsERb25YAvhUEicllt37m0O', true, 1),
+    ('manager', '$2a$12$.z4y.gN6zGcUMjU/USKMEedIinnVn.4xGonlD1.M2213psnAWqYW.', true, 2),
+    ('user', '$2a$12$.z4y.gN6zGcUMjU/USKMEedIinnVn.4xGonlD1.M2213psnAWqYW.', true, 3);
 
 INSERT INTO authorities (name)
 VALUES
