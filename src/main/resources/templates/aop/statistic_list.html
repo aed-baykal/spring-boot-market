@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:include="fragments/common-head">
+    <title>Статистика по использованию сервисов</title>
+</head>
+<body>
+<nav th:replace="fragments/nav-bar::nav-bar">
+</nav>
+<div class="container">
+    <h3>Статистика по использованию сервисов</h3>
+    <div  sec:authorize="isAuthenticated()">
+        <form method="post" th:action="@{${'/logout'}}">
+            <h5 th:text="'Вы вошли как ' + ${#authentication.getName()}"></h5>
+            <button type="submit" class="btn btn-warning">LogOut</button>
+        </form>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">Название</th>
+            <th scope="col">Время работы</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${items}">
+            <td th:text="${item.name} + ' ms'"></td>
+            <td th:text="${item.workTime} + ' ms'"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
