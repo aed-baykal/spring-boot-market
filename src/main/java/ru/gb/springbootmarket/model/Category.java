@@ -1,5 +1,6 @@
 package ru.gb.springbootmarket.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -23,6 +24,7 @@ public class Category {
     @Column
     private String title;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "category")
     private List<Product> products;
 }
