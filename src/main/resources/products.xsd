@@ -1,0 +1,21 @@
+<xsd:schema
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:tns="http://gb.ru/springbootmarket/api/products"
+        targetNamespace="http://gb.ru/springbootmarket/api/products"
+        elementFormDefault="qualified">
+    <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+    <xsd:element name="getProductResponse">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="result" type="tns:Item" minOccurs="0" maxOccurs="unbounded"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:complexType name="Item">
+        <xsd:sequence>
+            <xsd:element name="id" type="xsd:long"/>
+            <xsd:element name="title" type="xsd:string"/>
+            <xsd:element name="price" type="xsd:float"/>
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>

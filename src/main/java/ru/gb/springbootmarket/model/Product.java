@@ -1,5 +1,6 @@
 package ru.gb.springbootmarket.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -26,6 +27,7 @@ public class Product {
     @Column
     private Float price;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
