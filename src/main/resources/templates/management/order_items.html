@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/common-head">
+    <title>Список покупок</title>
+</head>
+<body>
+<nav th:replace="fragments/nav-bar::nav-bar">
+</nav>
+<div class="container">
+    <h1>Список покупок</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <td>id единицы заказа</td>
+            <td>Наименование товара</td>
+            <td>Количество</td>
+            <td>Статус</td>
+            <td></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="orderItem : ${orderItems}">
+            <td th:text="${orderItem.id}"></td>
+            <td th:text="${orderItem.product.title}"></td>
+            <td th:text="${orderItem.quantity}"></td>
+            <td><a th:href="@{${'/management/item/' + orderItem.id}}" th:text="${orderItem.storageStatus}"></a></td>
+            <td><form method="post" th:action="@{${'/management/item_complete/' + orderItem.id}}">
+                <button type="submit" class="btn btn-danger">complete</button>
+            </form></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

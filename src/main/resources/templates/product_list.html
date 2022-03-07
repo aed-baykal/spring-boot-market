@@ -9,9 +9,6 @@
 </nav>
 <div class="container">
     <h1 th:text="#{title.product.list}">Список товаров</h1>
-    <div  sec:authorize="isAuthenticated()">
-        <h4 th:text="'Вы вошли как ' +${#authentication.getName()}"></h4>
-    </div>
     <div class="row">
         <div th:each="product : ${products}" class="col-12 col-sm-6 col-md-3 mb-1">
             <div class="card h-100">

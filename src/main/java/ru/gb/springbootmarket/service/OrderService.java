@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.gb.springbootmarket.dto.Cart;
 import ru.gb.springbootmarket.enums.OrderStatus;
 import ru.gb.springbootmarket.enums.ShippingMethod;
+import ru.gb.springbootmarket.enums.StorageStatus;
 import ru.gb.springbootmarket.model.Customer;
 import ru.gb.springbootmarket.model.Order;
 import ru.gb.springbootmarket.model.OrderItem;
@@ -48,6 +49,7 @@ public class OrderService {
         order.setOrderStatus(OrderStatus.NEW);
         order.setShippingMethod(ShippingMethod.DELIVERY);
         order.setCreationTime(LocalDateTime.now());
+        order.setDeliverTime(LocalDateTime.now().plusDays(1L));
 
         return getOrder(cart, order);
     }
@@ -67,6 +69,7 @@ public class OrderService {
         order.setOrderStatus(OrderStatus.NEW);
         order.setShippingMethod(ShippingMethod.DELIVERY);
         order.setCreationTime(LocalDateTime.now());
+        order.setDeliverTime(LocalDateTime.now().plusDays(1L));
 
         return getOrder(cart, order);
     }
@@ -79,6 +82,7 @@ public class OrderService {
                     orderItem.setQuantity(cartItem.getCount());
                     orderItem.setPrice(cartItem.getPrice());
                     orderItem.setProduct(productRepository.getById(cartItem.getProductId()));
+                    orderItem.setStorageStatus(StorageStatus.IN_SELECTION);
                     return orderItem;
                 }).collect(Collectors.toList());
         order.setOrderItems(orderItems);
@@ -87,4 +91,17 @@ public class OrderService {
         return order;
     }
 
+    public List<Order> getAll() {
+        return orderRepository.findAll();
+    }
+
+    public Order getOrderById(Long id) {
+        return orderRepository.getById(id);
+    }
+
+    public void save(Order order) {
+        orderRepository.save(order);
+    }
+
+    public void delete(Order order) {orderRepository.delete(order);}
 }

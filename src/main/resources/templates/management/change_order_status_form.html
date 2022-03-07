@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/common-head">
+    <title>Форма изменения статуса</title>
+</head>
+<body>
+<nav th:replace="fragments/nav-bar::nav-bar">
+</nav>
+<div class="container">
+    <h1>Форма изменения статуса</h1>
+    <div class="row">
+        <form method="post" th:action="@{${'/management/change/' + order.id}}" class="col-md-6" th:object="${order}">
+            <div class="mb-3">
+                <label for="name" class="form-label">Статус</label>
+                <input type="text" class="form-control" id="name" th:field="*{orderStatus}">
+                <br>
+                <div th:each="err : ${#fields.errors('orderStatus')}" th:text="${err}" class="alert alert-danger">
+                </div>
+            </div>
+            <a th:href="@{'/management'}" class="btn btn-secondary">Отмена</a>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
