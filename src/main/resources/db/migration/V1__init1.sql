@@ -58,7 +58,8 @@ CREATE TABLE IF NOT EXISTS order_items (
     order_id BIGINT REFERENCES orders (id),
     product_id BIGINT REFERENCES products (id),
     price DOUBLE NOT NULL ,
-    quantity INT NOT NULL
+    quantity INT NOT NULL,
+    storage_status SMALLINT NOT NULL
 );
 
 

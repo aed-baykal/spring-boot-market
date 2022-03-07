@@ -1,9 +1,11 @@
 package ru.gb.springbootmarket.model;
 
 import lombok.Data;
+import ru.gb.springbootmarket.enums.StorageStatus;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,6 +28,10 @@ public class OrderItem {
 
   @Column(name = "quantity")
   private Integer quantity;
+
+  @Enumerated
+  @Column(columnDefinition = "smallint")
+  private StorageStatus storageStatus;
 
   @ManyToOne
   @JoinColumn(name = "product_id")

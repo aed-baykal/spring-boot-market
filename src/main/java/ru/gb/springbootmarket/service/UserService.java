@@ -31,4 +31,8 @@ public class UserService implements UserDetailsService {
                         )
                 ).orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
     }
+
+    public ru.gb.springbootmarket.model.User findUserByUserName(String userName) {
+        return userRepository.findByLogin(userName).orElse(null);
+    }
 }
