@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:include="fragments/common-head">
-    <title>Форма добавления товара</title>
+    <title>Форма авторизации</title>
 </head>
 <body>
 <nav th:replace="fragments/nav-bar::nav-bar">
@@ -15,11 +15,11 @@
                 <input type="text" class="form-control" id="name" name="username">
             </div>
             <div class="mb-3">
-                <label for="score" class="form-label">Пароль</label>
-                <input type="text" class="form-control" id="score" name="password">
+                <label for="pass" class="form-label">Пароль</label>
+                <input type="password" class="form-control" id="pass" name="password">
                 <br>
             </div>
-            <a th:href="@{'/'}" class="btn btn-secondary">Отмена</a>
+            <a th:href="@{'/register'}" class="btn btn-secondary">Регистрация</a>
             <button type="submit" class="btn btn-primary">Войти</button>
         </form>
     </div>

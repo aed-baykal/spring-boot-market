@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/common-head">
+    <title>Форма регистрации</title>
+</head>
+<body>
+<nav th:replace="fragments/nav-bar::nav-bar">
+</nav>
+<div class="container">
+    <div class="row justify-content-center">
+        <div th:if="${illegalStateException}" th:text="${illegalStateException.getMessage()}" class="alert alert-danger"></div>
+        <form method="post" th:action="@{/register}" class="col-md-6">
+            <h2>Вход</h2>
+            <div class="mb-3">
+                <label for="name" class="form-label">Логин</label>
+                <input type="text" class="form-control" id="name" name="username">
+            </div>
+            <div class="mb-3">
+                <label for="pass" class="form-label">Пароль</label>
+                <input type="password" class="form-control" id="pass" name="password">
+                <br>
+            </div>
+            <div class="mb-3">
+                <label for="pass2" class="form-label">Подтверждение Пароля</label>
+                <input type="password" class="form-control" id="pass2" name="password2">
+                <br>
+            </div>
+            <div class="mb-3">
+                <label for="mail" class="form-label">Email</label>
+                <input type="email" class="form-control" id="mail" name="email">
+                <br>
+            </div>
+            <div class="mb-3">
+                <label for="adress" class="form-label">Почтовый адрес</label>
+                <input type="text" class="form-control" id="adress" name="adress">
+                <br>
+            </div>
+            <a th:href="@{'/login'}" class="btn btn-secondary">Войти</a>
+            <button type="submit" class="btn btn-primary">Регистрация</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
