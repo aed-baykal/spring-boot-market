@@ -12,6 +12,13 @@ CREATE TABLE IF NOT EXISTS users (
     customer_id BIGINT REFERENCES customer_contacts (id)
 );
 
+CREATE TABLE IF NOT EXISTS registration_tokens (
+    id BIGSERIAL PRIMARY KEY,
+    token VARCHAR(255) NOT NULL,
+    expired_at TIMESTAMP NOT NULL,
+    user_id BIGINT REFERENCES users(id)
+);
+
 CREATE TABLE IF NOT EXISTS authorities (
     id   BIGSERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL
