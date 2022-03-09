@@ -24,6 +24,9 @@ public class Product {
     @Column
     private String title;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
     @Column
     private Float price;
 

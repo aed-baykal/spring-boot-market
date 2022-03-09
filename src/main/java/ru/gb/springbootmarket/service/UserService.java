@@ -7,8 +7,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.gb.springbootmarket.model.MarketUser;
 import ru.gb.springbootmarket.repository.UserRepository;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,7 +34,16 @@ public class UserService implements UserDetailsService {
                 ).orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
     }
 
-    public ru.gb.springbootmarket.model.User findUserByUserName(String userName) {
+    public MarketUser findUserByUserName(String userName) {
         return userRepository.findByLogin(userName).orElse(null);
     }
+
+    @Transactional(readOnly = true)
+    public List<MarketUser> getActiveManagers() {
+        return userRepository.findAllFetchAuthority().stream()
+                .filter(MarketUser::getEnabled)
+                .filter(user -> user.getAuthorities().stream().anyMatch(authority -> authority.getName().equals("ROLE_MANAGER")))
+                .collect(Collectors.toList());
+    }
+
 }

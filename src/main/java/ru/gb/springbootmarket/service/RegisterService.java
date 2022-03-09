@@ -1,26 +1,25 @@
 package ru.gb.springbootmarket.service;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.gb.springbootmarket.model.Customer;
+import ru.gb.springbootmarket.model.MarketUser;
 import ru.gb.springbootmarket.model.RegistrationToken;
 import ru.gb.springbootmarket.repository.AuthorityRepository;
 import ru.gb.springbootmarket.repository.RegistrationTokenRepository;
 import ru.gb.springbootmarket.repository.UserRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
+
+import static ru.gb.springbootmarket.enums.EmailType.USER_REGISTRATION;
 
 @Service
-public class RegisterService implements UserDetailsService {
+public class RegisterService /*implements UserDetailsService*/ {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -40,19 +39,19 @@ public class RegisterService implements UserDetailsService {
         this.emailService = emailService;
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByLogin(username)
-                .map(user -> new User(
-                                user.getCustomer().getEmail(),
-                                user.getPassword(),
-                                user.getEnabled(), true, true, true,
-                                user.getAuthorities().stream().map(authority ->
-                                        new SimpleGrantedAuthority(authority.getName())).collect(Collectors.toSet())
-                        )
-                ).orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
-    }
+//    @Override
+//    @Transactional(readOnly = true)
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        return userRepository.findByLogin(username)
+//                .map(user -> new User(
+//                                user.getCustomer().getEmail(),
+//                                user.getPassword(),
+//                                user.getEnabled(), true, true, true,
+//                                user.getAuthorities().stream().map(authority ->
+//                                        new SimpleGrantedAuthority(authority.getName())).collect(Collectors.toSet())
+//                        )
+//                ).orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
+//    }
 
     @Transactional
     public void sighUp(String username, String password, String email, String adress) {
@@ -63,7 +62,7 @@ public class RegisterService implements UserDetailsService {
         var customer = new Customer();
         customer.setEmail(email);
         customer.setAddress(adress);
-        var user = new ru.gb.springbootmarket.model.User();
+        var user = new MarketUser();
         user.setCustomer(customer);
         user.setLogin(username);
         user.setPassword(bCryptPasswordEncoder.encode(password));
@@ -74,7 +73,7 @@ public class RegisterService implements UserDetailsService {
         String tokenUid = UUID.randomUUID().toString();
         registrationTokenRepository.save(new RegistrationToken(tokenUid, LocalDateTime.now().plusMinutes(15), user));
 
-        emailService.sendVarificationLink(user.getCustomer().getEmail(), tokenUid);
+        emailService.sendMail(USER_REGISTRATION, Map.of("token", tokenUid), List.of(email));
     }
 
     @Transactional
@@ -88,11 +87,15 @@ public class RegisterService implements UserDetailsService {
     }
 
     public void resendingToken(RegistrationToken registrationToken) {
-        ru.gb.springbootmarket.model.User user = registrationToken.getUser();
+        MarketUser marketUser = registrationToken.getMarketUser();
         registrationTokenRepository.delete(registrationToken);
         String tokenUid = UUID.randomUUID().toString();
-        registrationTokenRepository.save(new RegistrationToken(tokenUid, LocalDateTime.now().plusMinutes(15), user));
+        registrationTokenRepository.save(new RegistrationToken(tokenUid, LocalDateTime.now().plusMinutes(15), marketUser));
 
-        emailService.sendVarificationLink(user.getCustomer().getEmail(), tokenUid);
+        emailService.sendMail(USER_REGISTRATION, Map.of("token", tokenUid), List.of(marketUser.getCustomer().getEmail()));
+    }
+
+    public RegistrationToken findRegistrationTokenByToken(String token) {
+        return registrationTokenRepository.findRegistrationTokenByToken(token);
     }
 }
