@@ -24,7 +24,7 @@
         <div class="form-inline">
             <a sec:authorize="!isAuthenticated()" th:href="@{'/login'}" class="btn btn-sm btn-outline-secondary">Войти</a>
         </div>
-        <form sec:authorize="isAuthenticated()" method="get" th:action="@{'/user/' + ${#authentication.getName()}}" class="form-inline">
+        <form sec:authorize="isAuthenticated()" method="get" th:action="@{'/marketUser/' + ${#authentication.getName()}}" class="form-inline">
             <button type="submit" class="btn btn-sm btn-outline-secondary" th:text="${#authentication.getName()}"></button>
         </form>
         <div id="shoppingCart" class="shopping-cart d-none">

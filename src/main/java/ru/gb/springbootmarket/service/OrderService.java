@@ -7,6 +7,7 @@ import ru.gb.springbootmarket.enums.OrderStatus;
 import ru.gb.springbootmarket.enums.ShippingMethod;
 import ru.gb.springbootmarket.enums.StorageStatus;
 import ru.gb.springbootmarket.model.Customer;
+import ru.gb.springbootmarket.model.MarketUser;
 import ru.gb.springbootmarket.model.Order;
 import ru.gb.springbootmarket.model.OrderItem;
 import ru.gb.springbootmarket.repository.OrderRepository;
@@ -16,8 +17,12 @@ import ru.gb.springbootmarket.repository.UserRepository;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static ru.gb.springbootmarket.enums.EmailType.MANAGER_ORDER_CREATED;
+import static ru.gb.springbootmarket.enums.EmailType.USER_ORDER_CREATED;
 
 @Service
 public class OrderService {
@@ -25,15 +30,21 @@ public class OrderService {
     private final CartService cartService;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
+    private final EmailService emailService;
+    private final UserService userService;
 
     public OrderService(OrderRepository orderRepository,
                         CartService cartService,
                         UserRepository userRepository,
-                        ProductRepository productRepository) {
+                        ProductRepository productRepository,
+                        EmailService emailService,
+                        UserService userService) {
         this.orderRepository = orderRepository;
         this.cartService = cartService;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
+        this.emailService = emailService;
+        this.userService = userService;
     }
 
     @Transactional
@@ -88,6 +99,11 @@ public class OrderService {
         order.setOrderItems(orderItems);
         orderRepository.save(order);
         cartService.init();
+
+        List<String> managerEmails = userService.getActiveManagers().stream().map(MarketUser::getCustomer).map(Customer::getEmail).collect(Collectors.toList());
+        emailService.sendMail(USER_ORDER_CREATED, Map.of("orderId", order.getId(), "price", order.getPrice()), List.of(order.getContactEmail()));
+        emailService.sendMail(MANAGER_ORDER_CREATED, Map.of("orderId", order.getId()), managerEmails);
+
         return order;
     }
 

@@ -33,7 +33,7 @@
     <div class="row">
         <div th:each="product : ${products}" class="col-12 col-sm-6 col-md-3 mb-1">
             <div class="card h-100">
-                <img class="card-body card-img-top" th:src="@{/images/image.png}" src="..." alt="Product info">
+                <img class="card-body card-img-top" th:src="@{${product.imageUrl}}" src="..." alt="Product info">
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title">
                         <a class="link-dark" th:href="@{${'/info/' + product.id}}" th:text="${product.title}">Подробнее</a>

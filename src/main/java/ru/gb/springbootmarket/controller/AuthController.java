@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.gb.springbootmarket.model.RegistrationToken;
-import ru.gb.springbootmarket.repository.RegistrationTokenRepository;
 import ru.gb.springbootmarket.service.RegisterService;
 
 import java.util.regex.Matcher;
@@ -16,14 +15,12 @@ import java.util.regex.Pattern;
 public class AuthController {
 
     private final RegisterService registerService;
-    private final RegistrationTokenRepository registrationTokenRepository;
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
 
-    public AuthController(RegisterService registerService, RegistrationTokenRepository registrationTokenRepository) {
+    public AuthController(RegisterService registerService) {
         this.registerService = registerService;
-        this.registrationTokenRepository = registrationTokenRepository;
     }
 
     public boolean validate(String emailStr) {
@@ -72,7 +69,7 @@ public class AuthController {
         if (registerService.confirmRegistration(token)) {
             return "registration/register-complete";
         } else {
-            RegistrationToken registrationToken = registrationTokenRepository.findRegistrationTokenByToken(token);
+            RegistrationToken registrationToken = registerService.findRegistrationTokenByToken(token);
             if (registrationToken == null) return "redirect:/";
             registerService.resendingToken(registrationToken);
             return "redirect:/back_to_register";

@@ -6,9 +6,11 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
+import ru.gb.springbootmarket.enums.EmailType;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.util.Collection;
+import java.util.Map;
 
 @Service
 public class EmailService {
@@ -21,23 +23,62 @@ public class EmailService {
   }
 
   @Async
-  public void sendVarificationLink(String to, String token) {
+  public void sendMail(EmailType emailType, Map<String, Object> params, Collection<String> receivers) {
+    switch (emailType) {
+      case USER_REGISTRATION -> receivers.forEach(receiver -> sendVerificationLink(receiver, params));
+      case USER_ORDER_CREATED -> receivers.forEach(receiver -> sendOrderDetailsToUser(receiver, params));
+      case MANAGER_ORDER_CREATED -> receivers.forEach(receiver -> sendOrderDetailsToManager(receiver, params));
+    }
+  }
+
+  private void sendOrderDetailsToManager(String to, Map<String, Object> params) {
+    try {
+      MimeMessage mimeMessage = mailSender.createMimeMessage();
+      MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+      helper.setTo(to);
+      helper.setFrom("geek-market@gb.ru");
+      helper.setSubject("Поступил новый заказ");
+      helper.setText("Заказ №" + params.get("orderId") + " ожидает обработки", false);
+
+      mailSender.send(mimeMessage);
+    } catch (MessagingException e) {
+      LOGGER.error("failed to send mail ", e);
+    }
+  }
+
+  private void sendOrderDetailsToUser(String to, Map<String, Object> params) {
+    try {
+      MimeMessage mimeMessage = mailSender.createMimeMessage();
+      MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
+      helper.setTo(to);
+      helper.setFrom("geek-market@gb.ru");
+      helper.setSubject("Заказ успешно сформирован");
+      helper.setText("Заказ №" + params.get("orderId") + " на сумму " + params.get("price") + " успешно создан", false);
+
+      mailSender.send(mimeMessage);
+    } catch (MessagingException e) {
+      LOGGER.error("failed to send mail ", e);
+    }
+  }
+
+  private void sendVerificationLink(String to, Map<String, Object> params) {
     try {
       MimeMessage mimeMessage = mailSender.createMimeMessage();
       MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
       helper.setTo(to);
       helper.setFrom("geek-market@gb.ru");
       helper.setSubject("Подтвердите ваш email");
-      helper.setText(generateVerificationEmailText(token), true);
+      helper.setText(generateVerificationEmailText((String) params.get("token")), true);
 
       mailSender.send(mimeMessage);
     } catch (MessagingException e) {
       LOGGER.error("failed to send mail ", e);
     }
-
   }
 
   // TODO работа с mail темплейтами попробовать вынести в базу
+
+
   private String generateVerificationEmailText(String token) {
     return "<!doctype html>\n" +
            "<html>\n" +

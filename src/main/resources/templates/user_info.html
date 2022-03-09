@@ -17,9 +17,9 @@
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
-                            <h5 th:text="${'Имя пользователя: ' + user.getLogin()}" class="card-title"></h5>
-                            <p th:text="${'Email: ' + user.getCustomer().getEmail()}" class="card-text"></p>
-                            <p th:text="${'Адрес: ' + user.getCustomer().getAddress()}" class="card-text"><small class="text-muted"></small></p>
+                            <h5 th:text="${'Имя пользователя: ' + marketUser.getLogin()}" class="card-title"></h5>
+                            <p th:text="${'Email: ' + marketUser.getCustomer().getEmail()}" class="card-text"></p>
+                            <p th:text="${'Адрес: ' + marketUser.getCustomer().getAddress()}" class="card-text"><small class="text-muted"></small></p>
                         </div>
                         <form method="post" th:action="@{'/logout'}" class="form-inline">
                             <button type="submit" class="btn btn-sm btn-outline-secondary">Выйти</button>

@@ -72,14 +72,16 @@ CREATE TABLE IF NOT EXISTS order_items (
 
 INSERT INTO customer_contacts (email, address)
 VALUES ('admin@admin.ru', 'Электросталь, ул. Захарченко, 7А'),
-       ('manager@manager.ru', 'Электросталь, ул. Второва, 3'),
-       ('user@user.ru', 'Электросталь, Ул. Бульвар 60-летия Победы, 14');
+       ('manager1@manager.ru', 'Электросталь, ул. Второва, 3'),
+       ('manager2@manager.ru', 'Электросталь, ул. Захарченко, 7А'),
+       ('marketUser@marketUser.ru', 'Электросталь, Ул. Бульвар 60-летия Победы, 14');
 
 INSERT INTO users (login, password, enabled, customer_id)
 VALUES
     ('admin', '$2a$12$fIxG7VKFdJw9HriHgNyuNu.DitJytiDsERb25YAvhUEicllt37m0O', true, 1),
-    ('manager', '$2a$12$.z4y.gN6zGcUMjU/USKMEedIinnVn.4xGonlD1.M2213psnAWqYW.', true, 2),
-    ('user', '$2a$12$.z4y.gN6zGcUMjU/USKMEedIinnVn.4xGonlD1.M2213psnAWqYW.', true, 3);
+    ('manager1', '$2a$12$.z4y.gN6zGcUMjU/USKMEedIinnVn.4xGonlD1.M2213psnAWqYW.', true, 2),
+    ('manager2', '$2a$12$.z4y.gN6zGcUMjU/USKMEedIinnVn.4xGonlD1.M2213psnAWqYW.', true, 3),
+    ('marketUser', '$2a$12$.z4y.gN6zGcUMjU/USKMEedIinnVn.4xGonlD1.M2213psnAWqYW.', true, 4);
 
 INSERT INTO authorities (name)
 VALUES
@@ -90,14 +92,15 @@ VALUES
 INSERT INTO users_authorities (user_id, authority_id)
 VALUES (1, 1),
        (2, 2),
-       (3, 3);
+       (3, 2),
+       (4, 3);
 
 INSERT INTO categories (title)
 VALUES ('Электроника'),
        ('Бытовая техника');
 
-INSERT INTO products(title, price, category_id)
-VALUES ('Ноутбук Lenovo', 44990, 1),
-       ('Телефон iPhone', 66490, 1),
-       ('Стиральная машинка LG', 32290, 2),
-       ('Телевизор Samsung', 32290, 1);
+INSERT INTO products(title, price, category_id, image_url)
+VALUES ('Ноутбук Lenovo', 44990, 1, '/images/lenovo.png'),
+       ('Телефон iPhone', 66490, 1, '/images/iphone.png'),
+       ('Стиральная машинка LG', 32290, 2, '/images/lg.png'),
+       ('Телевизор Samsung', 32290, 1, '/images/samsung.png');
