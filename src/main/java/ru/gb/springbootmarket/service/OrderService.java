@@ -111,6 +111,12 @@ public class OrderService {
         return orderRepository.findAll();
     }
 
+    public List<Order> getAllActive() { return orderRepository.getAllActive();}
+
+    public List<Order> getOrdersByCustomer(Long id) {
+        return orderRepository.getOrdersByCustomer(id);
+    }
+
     public Order getOrderById(Long id) {
         return orderRepository.getById(id);
     }

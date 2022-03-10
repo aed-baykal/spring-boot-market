@@ -11,18 +11,18 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <td>id единицы заказа</td>
             <td>Наименование товара</td>
             <td>Количество</td>
+            <td>Цена</td>
             <td>Статус</td>
         </tr>
         </thead>
         <tbody>
         <tr th:each="orderItem : ${orderItems}">
-            <td th:text="${orderItem.id}"></td>
             <td th:text="${orderItem.product.title}"></td>
             <td th:text="${orderItem.quantity}"></td>
-            <td><a th:href="@{${'/management/item/' + orderItem.id}}" th:text="${orderItem.storageStatus}"></a></td>
+            <td th:text="${orderItem.price}"></td>
+            <td th:text="${orderItem.storageStatus}"></td>
         </tr>
         </tbody>
     </table>

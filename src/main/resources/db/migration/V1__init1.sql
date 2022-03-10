@@ -52,6 +52,7 @@ CREATE TABLE IF NOT EXISTS orders (
     customer_id  BIGINT REFERENCES customer_contacts (id),
     price        FLOAT NOT NULL ,
     order_status SMALLINT NOT NULL ,
+    is_active    BOOLEAN DEFAULT TRUE,
     shipping_method SMALLINT NOT NULL ,
     address      TEXT NOT NULL ,
     contact_email VARCHAR(255) NOT NULL ,
