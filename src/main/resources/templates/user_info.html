@@ -9,7 +9,7 @@
 <div class="container">
     <div class="row justify-content-center g-0">
         <div class="col-6">
-            <h2 th:text="#{title.product.info}">Пользователь</h2>
+            <h2>Пользователь</h2>
             <div class="card" style="max-width: 540px;">
                 <div class="row">
                     <div class="col-md-4">
@@ -17,9 +17,10 @@
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
-                            <h5 th:text="${'Имя пользователя: ' + marketUser.getLogin()}" class="card-title"></h5>
-                            <p th:text="${'Email: ' + marketUser.getCustomer().getEmail()}" class="card-text"></p>
-                            <p th:text="${'Адрес: ' + marketUser.getCustomer().getAddress()}" class="card-text"><small class="text-muted"></small></p>
+                            <h5 th:text="${'Имя пользователя: ' + user.getLogin()}" class="card-title"></h5>
+                            <p th:text="${'Email: ' + user.getCustomer().getEmail()}" class="card-text"></p>
+                            <p th:text="${'Адрес: ' + user.getCustomer().getAddress()}" class="card-text"><small class="text-muted"></small></p>
+                            <a class="link-dark" th:href="@{${'/market_user/' + user.getCustomer().getId()}}">История заказов</a>
                         </div>
                         <form method="post" th:action="@{'/logout'}" class="form-inline">
                             <button type="submit" class="btn btn-sm btn-outline-secondary">Выйти</button>

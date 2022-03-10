@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/common-head">
+    <title>Панель менеджера</title>
+</head>
+<body>
+<nav th:replace="fragments/nav-bar::nav-bar">
+</nav>
+<div class="container">
+    <h1>История Заказов</h1>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <td>id</td>
+            <td>Email</td>
+            <td>Адрес</td>
+            <td>Стоимость</td>
+            <td>Статус</td>
+            <td>Способ доставки</td>
+            <td>Время заказа</td>
+            <td>Время доставки</td>
+            <td></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.id}"></td>
+            <td th:text="${order.contactEmail}"></td>
+            <td th:text="${order.address}"></td>
+            <td th:text="${order.price}"></td>
+            <td th:text="${order.orderStatus}"></td>
+            <td th:text="${order.shippingMethod}"></td>
+            <td th:text="${order.creationTime}"></td>
+            <td th:text="${order.deliverTime}"></td>
+            <td><a th:href="@{${'/market_user/items_by_id/' + order.id}}">Позиции</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

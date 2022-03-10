@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ru.gb.springbootmarket.enums.OrderStatus;
+import ru.gb.springbootmarket.enums.StorageStatus;
 import ru.gb.springbootmarket.model.Order;
 import ru.gb.springbootmarket.model.OrderItem;
 import ru.gb.springbootmarket.service.OrderItemService;
@@ -15,6 +17,7 @@ import ru.gb.springbootmarket.service.OrderService;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/management")
@@ -30,7 +33,7 @@ public class ManagerController {
 
     @GetMapping
     public String getAllOrders(Model model) {
-        List<Order> orders = orderService.getAll();
+        List<Order> orders = orderService.getAllActive();
         model.addAttribute("orders", orders);
         return "management/index";
     }
@@ -55,7 +58,11 @@ public class ManagerController {
 
     @GetMapping("/items_by_id/{id}")
     public String getAllOrderItemsByOrderId(@PathVariable Long id, Model model) {
-        List<OrderItem> orderItems = orderService.getOrderById(id).getOrderItems();
+        Order order = orderService.getOrderById(id);
+        order.setOrderStatus(OrderStatus.IN_WORK);
+        orderService.save(order);
+        List<OrderItem> orderItems = orderService.getOrderById(id).getOrderItems().stream()
+                .filter(orderItem2 -> orderItem2.getStorageStatus().equals(StorageStatus.IN_SELECTION)).collect(Collectors.toList());;
         model.addAttribute("orderItems", orderItems);
         return "management/order_items";
     }
@@ -75,25 +82,23 @@ public class ManagerController {
         OrderItem orderItem1 = orderItemService.getOrderItemById(id);
         orderItem1.setStorageStatus(orderItem.getStorageStatus());
         orderItemService.save(orderItem1);
-        List<OrderItem> orderItems = orderService.getOrderById(orderItem1.getOrder().getId()).getOrderItems();
+        List<OrderItem> orderItems = orderService.getOrderById(orderItem1.getOrder().getId()).getOrderItems().stream()
+                .filter(orderItem2 -> orderItem2.getStorageStatus().equals(StorageStatus.IN_SELECTION)).collect(Collectors.toList());
         model.addAttribute("orderItems", orderItems);
+        if (orderItems.isEmpty()) {
+            Order order = orderService.getOrderById(orderItem1.getOrder().getId());
+            order.setOrderStatus(OrderStatus.SHIPPED);
+            orderService.save(order);
+            return "redirect:/management";
+        }
         return "management/order_items";
-    }
-
-    @PostMapping("/item_complete/{id}")
-    public String itemComplete(@PathVariable Long id, Model model) {
-        OrderItem orderItem = orderItemService.getOrderItemById(id);
-        orderItemService.delete(orderItem);
-        List<OrderItem> orderItems = orderService.getOrderById(orderItem.getOrder().getId()).getOrderItems();
-        model.addAttribute("orderItems", orderItems);
-        if (orderItems.isEmpty()) return "redirect:/management";
-        else return "management/order_items";
     }
 
     @PostMapping("/complete/{id}")
     public String orderComplete(@PathVariable Long id) {
         Order order = orderService.getOrderById(id);
-        orderService.delete(order);
+        order.setIs_active(false);
+        orderService.save(order);
         return "redirect:/management";
     }
 }
