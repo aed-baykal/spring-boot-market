@@ -25,9 +25,15 @@ public class EmailService {
   @Async
   public void sendMail(EmailType emailType, Map<String, Object> params, Collection<String> receivers) {
     switch (emailType) {
-      case USER_REGISTRATION -> receivers.forEach(receiver -> sendVerificationLink(receiver, params));
-      case USER_ORDER_CREATED -> receivers.forEach(receiver -> sendOrderDetailsToUser(receiver, params));
-      case MANAGER_ORDER_CREATED -> receivers.forEach(receiver -> sendOrderDetailsToManager(receiver, params));
+      case USER_REGISTRATION:
+        receivers.forEach(receiver -> sendVerificationLink(receiver, params));
+        break;
+      case USER_ORDER_CREATED:
+        receivers.forEach(receiver -> sendOrderDetailsToUser(receiver, params));
+        break;
+      case MANAGER_ORDER_CREATED:
+        receivers.forEach(receiver -> sendOrderDetailsToManager(receiver, params));
+        break;
     }
   }
 

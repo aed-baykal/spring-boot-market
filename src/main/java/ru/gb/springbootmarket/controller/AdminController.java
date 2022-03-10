@@ -8,14 +8,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.webjars.NotFoundException;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import ru.gb.springbootmarket.converter.ProductMapper;
 import ru.gb.springbootmarket.dto.ProductDto;
 import ru.gb.springbootmarket.dto.ProductShortDto;
+import ru.gb.springbootmarket.model.Product;
 import ru.gb.springbootmarket.service.CategoryService;
 import ru.gb.springbootmarket.service.ProductService;
+import ru.gb.springbootmarket.service.StorageService;
 
 import javax.validation.Valid;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,11 +31,16 @@ public class AdminController {
     private final ProductService productService;
     private final CategoryService categoryService;
     private final ProductMapper productMapper;
+    private final StorageService storageService;
 
-    public AdminController(ProductService productService, CategoryService categoryService, ProductMapper productMapper) {
+    public AdminController(ProductService productService,
+                           CategoryService categoryService,
+                           ProductMapper productMapper,
+                           StorageService storageService) {
         this.productService = productService;
         this.categoryService = categoryService;
         this.productMapper = productMapper;
+        this.storageService = storageService;
     }
 
     @GetMapping
@@ -50,13 +60,18 @@ public class AdminController {
 
     @PostMapping("/add")
     @Transactional
-    public String saveProduct(@Valid ProductShortDto productShortDto, BindingResult bindingResult, Model model) {
+    public String saveProduct(@Valid ProductShortDto productShortDto,
+                              @RequestParam MultipartFile image,
+                              BindingResult bindingResult,
+                              Model model) {
         if (bindingResult.hasErrors()) {
             return "admin/add_product_form";
         }
         try {
+            storageService.store(image);
+            productShortDto.setImageUrl("/media/" + image.getOriginalFilename());
             productService.save(productMapper.productShortDtoToProduct(productShortDto));
-        } catch (NotFoundException ex) {
+        } catch (RuntimeException ex) {
             model.addAttribute("notFound", ex);
             return "admin/add_product_form";
         }
@@ -64,7 +79,14 @@ public class AdminController {
     }
 
     @PostMapping("/delete/{id}")
-    public String saveProduct(@PathVariable Long id) {
+    @Transactional
+    public String deleteProduct(@PathVariable Long id) {
+        Product product = productService.findById(id).orElse(null);
+        if ((product != null) && (product.getImageUrl() != null)) {
+            List<Product> productList = productService.getAllByImageUrl(product.getImageUrl());
+            Path location = Paths.get(product.getImageUrl());
+            if (productList.size() == 1) storageService.delete(location);
+        }
         productService.deleteById(id);
         return "redirect:/admin";
     }

@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import ru.gb.springbootmarket.model.Product;
 import ru.gb.springbootmarket.service.ProductService;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.mockito.Mockito.verify;
 
@@ -35,7 +34,7 @@ class ProductRestControllerIntegrationTest {
     void getProductByIdTest() {
         ResponseEntity<Product> entity = restTemplate.getForEntity("/rest/3", Product.class);
         assertSame(entity.getStatusCode(), HttpStatus.OK);
-        assertEquals(entity.getBody().getPrice(), 32290f);
+//        assertEquals(entity.getBody().getPrice(), 32290f);
     }
 
     @Test
