@@ -13,13 +13,14 @@ import ru.gb.springbootmarket.repository.UserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
 import static ru.gb.springbootmarket.enums.EmailType.USER_REGISTRATION;
 
 @Service
-public class RegisterService /*implements UserDetailsService*/ {
+public class RegisterService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -39,30 +40,16 @@ public class RegisterService /*implements UserDetailsService*/ {
         this.emailService = emailService;
     }
 
-//    @Override
-//    @Transactional(readOnly = true)
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        return userRepository.findByLogin(username)
-//                .map(user -> new User(
-//                                user.getCustomer().getEmail(),
-//                                user.getPassword(),
-//                                user.getEnabled(), true, true, true,
-//                                user.getAuthorities().stream().map(authority ->
-//                                        new SimpleGrantedAuthority(authority.getName())).collect(Collectors.toSet())
-//                        )
-//                ).orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
-//    }
-
     @Transactional
     public void sighUp(String username, String password, String email, String adress) {
         boolean userExist = userRepository.findByLogin(username).isPresent();
         if (userExist) {
             throw new IllegalStateException("Пользователь уже существует");
         }
-        var customer = new Customer();
+        Customer customer = new Customer();
         customer.setEmail(email);
         customer.setAddress(adress);
-        var user = new MarketUser();
+        MarketUser user = new MarketUser();
         user.setCustomer(customer);
         user.setLogin(username);
         user.setPassword(bCryptPasswordEncoder.encode(password));
@@ -78,7 +65,7 @@ public class RegisterService /*implements UserDetailsService*/ {
 
     @Transactional
     public boolean confirmRegistration(String token) {
-        var user = registrationTokenRepository.findUserByToken(LocalDateTime.now(), token);
+        Optional<MarketUser> user = registrationTokenRepository.findUserByToken(LocalDateTime.now(), token);
         if (user.isEmpty()) {
             return false;
         }

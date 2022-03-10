@@ -19,6 +19,8 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    public List<Product> getAllByImageUrl(String imageUrl) { return productRepository.findAllByImageUrl(imageUrl);}
+
     public void save(Product product) {
         productRepository.save(product);
     }

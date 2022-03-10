@@ -100,7 +100,7 @@ VALUES ('Электроника'),
        ('Бытовая техника');
 
 INSERT INTO products(title, price, category_id, image_url)
-VALUES ('Ноутбук Lenovo', 44990, 1, '/images/lenovo.png'),
-       ('Телефон iPhone', 66490, 1, '/images/iphone.png'),
-       ('Стиральная машинка LG', 32290, 2, '/images/lg.png'),
-       ('Телевизор Samsung', 32290, 1, '/images/samsung.png');
+VALUES ('Ноутбук Lenovo', 44990, 1, '/media/lenovo.png'),
+       ('Телефон iPhone', 66490, 1, '/media/iphone.png'),
+       ('Стиральная машинка LG', 32290, 2, '/media/lg.png'),
+       ('Телевизор Samsung', 32290, 1, '/media/samsung.png');

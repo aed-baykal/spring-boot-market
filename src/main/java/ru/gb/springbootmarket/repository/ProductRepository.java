@@ -11,4 +11,7 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("select p from Product p left join fetch p.category")
     List<Product> findAll();
+
+    @Query("select p from Product p where p.imageUrl = :imageUrl")
+    List<Product> findAllByImageUrl(String imageUrl);
 }
