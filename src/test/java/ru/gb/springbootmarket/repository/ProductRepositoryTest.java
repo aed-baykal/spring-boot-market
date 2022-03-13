@@ -53,6 +53,6 @@ class ProductRepositoryTest {
 
         List<Product> products = productRepository.findAll();
         assertTrue(products.stream().allMatch(product -> product.getCategory() != null));
-        assertEquals(products.get(0).getCategory().getTitle(), "Электроника");
+        assertEquals(products.get(0).getCategory().getTitle(), "Смартфоны и гаджеты");
     }
 }

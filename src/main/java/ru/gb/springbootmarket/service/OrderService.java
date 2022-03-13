@@ -98,7 +98,7 @@ public class OrderService {
                 }).collect(Collectors.toList());
         order.setOrderItems(orderItems);
         orderRepository.save(order);
-        cartService.init();
+        cartService.removeCartForCurrentUser();
 
         List<String> managerEmails = userService.getActiveManagers().stream().map(MarketUser::getCustomer).map(Customer::getEmail).collect(Collectors.toList());
         emailService.sendMail(USER_ORDER_CREATED, Map.of("orderId", order.getId(), "price", order.getPrice()), List.of(order.getContactEmail()));

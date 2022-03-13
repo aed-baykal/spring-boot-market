@@ -1,20 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      th:with="currentPage='Статистика по использованию сервисов'">
 <head th:include="fragments/common-head">
-    <title>Статистика по использованию сервисов</title>
 </head>
 <body>
 <nav th:replace="fragments/nav-bar::nav-bar">
 </nav>
 <div class="container">
     <h3>Статистика по использованию сервисов</h3>
-    <div  sec:authorize="isAuthenticated()">
-        <form method="post" th:action="@{${'/logout'}}">
-            <h5 th:text="'Вы вошли как ' + ${#authentication.getName()}"></h5>
-            <button type="submit" class="btn btn-warning">LogOut</button>
-        </form>
-    </div>
     <table class="table table-bordered">
         <thead>
         <tr>

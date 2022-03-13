@@ -1,14 +1,25 @@
 package ru.gb.springbootmarket.dto;
 
 import lombok.Data;
+import org.springframework.data.redis.core.RedisHash;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@RedisHash(value = "Cart", timeToLive = 86400L)
 public class Cart {
+    private String id;
     private List<CartItem> items = new ArrayList<>();
     private double price;
+
+    public Cart(){
+
+    }
+
+    public Cart(String id) {
+        this.id = id;
+    }
 
     public void addItem(CartItem cartItem) {
         items.stream().filter(items -> items.getProductId().equals(cartItem.getProductId())).findFirst()

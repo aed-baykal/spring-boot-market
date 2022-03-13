@@ -13,34 +13,34 @@ import java.util.List;
 @Endpoint
 public class ProductsEndpoint {
 
-  private final ProductService productService;
+    private final ProductService productService;
 
-  public ProductsEndpoint(ProductService productService) {
-    this.productService = productService;
-  }
-
-  @PayloadRoot(namespace = "http://gb.ru/springbootmarket/api/products", localPart = "getProductsRequest")
-  @ResponsePayload
-  public GetProductResponse getProducts() {
-    GetProductResponse response = new GetProductResponse();
-    List<Item> result = response.getResult();
-    List<Product> products = productService.getAll();
-    for (Product product : products) {
-      result.add(productToItem(product));
+    public ProductsEndpoint(ProductService productService) {
+        this.productService = productService;
     }
-    return response;
-  }
 
-  public static Item productToItem(Product product) {
-    if (product == null) {
-      return null;
+    @PayloadRoot(namespace = "http://gb.ru/springbootmarket/api/products", localPart = "getProductsRequest")
+    @ResponsePayload
+    public GetProductResponse getProducts() {
+        GetProductResponse response = new GetProductResponse();
+        List<Item> result = response.getResult();
+        List<Product> products = productService.getAll();
+        for (Product product : products) {
+            result.add(productToItem(product));
+        }
+        return response;
     }
-    Item item = new Item();
-    item.setId(product.getId());
-    item.setTitle(product.getTitle());
-    if (product.getPrice() != null) item.setPrice(product.getPrice());
 
-    return item;
-  }
+    public static Item productToItem(Product product) {
+        if (product == null) {
+            return null;
+        }
+        Item item = new Item();
+        item.setId(product.getId());
+        item.setTitle(product.getTitle());
+        if (product.getPrice() != null) item.setPrice(product.getPrice());
+
+        return item;
+    }
 
 }

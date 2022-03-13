@@ -21,6 +21,9 @@ public class Category {
     @Column
     private Long id;
 
+    @Column(name = "image_url")
+    private String imageUrl;
+
     @Column
     private String title;
 
