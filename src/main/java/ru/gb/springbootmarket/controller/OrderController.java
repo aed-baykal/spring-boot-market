@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.gb.springbootmarket.service.OrderService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
 @Controller
@@ -32,9 +33,9 @@ public class OrderController {
     }
 
     @PostMapping
-    public String createOrder(@RequestParam String address, @RequestParam String email, Model model) {
+    public String createOrder(@RequestParam String address, @RequestParam String email, Model model, HttpServletRequest request) {
         try {
-            orderService.placeOrder(address, email);
+            orderService.placeOrder(address, email, request);
             return "redirect:/order/success";
         } catch (IllegalStateException e) {
             model.addAttribute("illegalStateException", e);
@@ -43,9 +44,9 @@ public class OrderController {
     }
 
     @PostMapping("/next")
-    public String createOrder(Principal principal, Model model) {
+    public String createOrder(Principal principal, Model model, HttpServletRequest request) {
         try {
-            orderService.placeOrder(principal);
+            orderService.placeOrder(principal, request);
             return "redirect:/order/success";
         } catch (IllegalStateException e) {
             model.addAttribute("illegalStateException", e);

@@ -14,6 +14,7 @@ import ru.gb.springbootmarket.repository.OrderRepository;
 import ru.gb.springbootmarket.repository.ProductRepository;
 import ru.gb.springbootmarket.repository.UserRepository;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -48,8 +49,8 @@ public class OrderService {
     }
 
     @Transactional
-    public Order placeOrder(String address, String email) {
-        Cart cart = cartService.getCartForCurrentUser();
+    public Order placeOrder(String address, String email, HttpServletRequest request) {
+        Cart cart = cartService.getCartForCurrentUser(request);
         if (cart.getItems().isEmpty()) {
             throw new IllegalStateException("Корзина пуста");
         }
@@ -62,12 +63,12 @@ public class OrderService {
         order.setCreationTime(LocalDateTime.now());
         order.setDeliverTime(LocalDateTime.now().plusDays(1L));
 
-        return getOrder(cart, order);
+        return getOrder(cart, order, request);
     }
 
     @Transactional
-    public Order placeOrder(Principal principal) {
-        Cart cart = cartService.getCartForCurrentUser();
+    public Order placeOrder(Principal principal, HttpServletRequest request) {
+        Cart cart = cartService.getCartForCurrentUser(request);
         if (cart.getItems().isEmpty()) {
             throw new IllegalStateException("Корзина пуста");
         }
@@ -82,10 +83,10 @@ public class OrderService {
         order.setCreationTime(LocalDateTime.now());
         order.setDeliverTime(LocalDateTime.now().plusDays(1L));
 
-        return getOrder(cart, order);
+        return getOrder(cart, order, request);
     }
 
-    private Order getOrder(Cart cart, Order order) {
+    private Order getOrder(Cart cart, Order order, HttpServletRequest request) {
         List<OrderItem> orderItems = cart.getItems().stream()
                 .map(cartItem -> {
                     OrderItem orderItem = new OrderItem();
@@ -98,7 +99,7 @@ public class OrderService {
                 }).collect(Collectors.toList());
         order.setOrderItems(orderItems);
         orderRepository.save(order);
-        cartService.removeCartForCurrentUser();
+        cartService.removeCartForCurrentUser(request);
 
         List<String> managerEmails = userService.getActiveManagers().stream().map(MarketUser::getCustomer).map(Customer::getEmail).collect(Collectors.toList());
         emailService.sendMail(USER_ORDER_CREATED, Map.of("orderId", order.getId(), "price", order.getPrice()), List.of(order.getContactEmail()));

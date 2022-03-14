@@ -41,7 +41,7 @@ public class RegisterService {
     }
 
     @Transactional
-    public void sighUp(String username, String password, String email, String adress) {
+    public void signUp(String username, String password, String email, String adress) {
         boolean userExist = userRepository.findByLogin(username).isPresent();
         if (userExist) {
             throw new IllegalStateException("Пользователь уже существует");

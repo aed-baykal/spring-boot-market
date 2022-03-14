@@ -28,7 +28,7 @@
             <td th:text="${order.contactEmail}"></td>
             <td th:text="${order.address}"></td>
             <td th:text="${order.price}"></td>
-            <td th:text="${order.orderStatus}"></td>
+            <td th:text="${order.orderStatus.getName()}"></td>
             <td th:text="${order.shippingMethod}"></td>
             <td th:text="${order.creationTime}"></td>
             <td th:text="${order.deliverTime}"></td>

@@ -46,6 +46,9 @@ public class Order {
     @Column(name = "is_active")
     private Boolean is_active = true;
 
+    @Column(name = "manager")
+    private String manager = "";
+
     @Enumerated
     @Column(columnDefinition = "smallint")
     private OrderStatus orderStatus;
