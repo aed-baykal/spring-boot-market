@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+    #  geek-market:
+    #    build: .
+    #    ports:
+    #      - "8080:8080"
+
+    maildev:
+        image: maildev/maildev
+        ports:
+            - "1080:80"
+            - "25:25"
+
+    redis:
+        image: 'bitnami/redis:latest'
+        environment:
+            - ALLOW_EMPTY_PASSWORD=yes
+            - REDIS_PORT_NUMBER=7000
+        ports:
+            - "9999:7000"

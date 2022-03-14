@@ -22,45 +22,48 @@ import java.util.List;
 @Table(name="orders")
 @Data
 public class Order {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
+    private Long id;
 
-  @Column(name = "price")
-  private Double price;
+    @Column(name = "price")
+    private Double price;
 
-  @ManyToOne
-  @JoinColumn(name = "customer_id")
-  private Customer  customer;
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer  customer;
 
-  @Column(name = "contact_email")
-  private String contactEmail;
+    @Column(name = "contact_email")
+    private String contactEmail;
 
-  @Column(name = "details")
-  private String details;
+    @Column(name = "details")
+    private String details;
 
-  @Column(name = "address")
-  private String address;
+    @Column(name = "address")
+    private String address;
 
-  @Column(name = "is_active")
-  private Boolean is_active = true;
+    @Column(name = "is_active")
+    private Boolean is_active = true;
 
-  @Enumerated
-  @Column(columnDefinition = "smallint")
-  private OrderStatus orderStatus;
+    @Column(name = "manager")
+    private String manager = "";
 
-  @Enumerated
-  @Column(columnDefinition = "smallint")
-  private ShippingMethod shippingMethod;
+    @Enumerated
+    @Column(columnDefinition = "smallint")
+    private OrderStatus orderStatus;
 
-  @Column(name = "creation_time")
-  private LocalDateTime creationTime;
+    @Enumerated
+    @Column(columnDefinition = "smallint")
+    private ShippingMethod shippingMethod;
 
-  @Column(name = "deliver_time")
-  private LocalDateTime deliverTime;
+    @Column(name = "creation_time")
+    private LocalDateTime creationTime;
 
-  @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-  private List<OrderItem> orderItems;
+    @Column(name = "deliver_time")
+    private LocalDateTime deliverTime;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems;
 
 }

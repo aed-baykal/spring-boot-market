@@ -13,10 +13,10 @@ import java.util.Optional;
 @Repository
 public interface RegistrationTokenRepository extends JpaRepository<RegistrationToken, Long> {
 
-  @Query("SELECT rt.marketUser FROM RegistrationToken rt WHERE rt.expiredAt > :time AND rt.token = :token")
-  Optional<MarketUser> findUserByToken(@Param("time") LocalDateTime time, @Param("token") String token);
+    @Query("SELECT rt.marketUser FROM RegistrationToken rt WHERE rt.expiredAt > :time AND rt.token = :token")
+    Optional<MarketUser> findUserByToken(@Param("time") LocalDateTime time, @Param("token") String token);
 
-  RegistrationToken findRegistrationTokenByToken(String token);
+    RegistrationToken findRegistrationTokenByToken(String token);
 
-  void delete(RegistrationToken registrationToken);
+    void delete(RegistrationToken registrationToken);
 }

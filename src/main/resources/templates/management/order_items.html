@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="currentPage='Список покупок'">
 <head th:include="fragments/common-head">
-    <title>Список покупок</title>
 </head>
 <body>
 <nav th:replace="fragments/nav-bar::nav-bar">
 </nav>
 <div class="container">
-    <h1>Список покупок</h1>
+    <h1 th:text="${order.orderStatus.getName() + ' менеджер ' + order.manager}">Список покупок</h1>
     <table class="table table-striped">
         <thead>
         <tr>

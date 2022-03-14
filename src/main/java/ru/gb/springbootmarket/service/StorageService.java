@@ -6,7 +6,7 @@ import java.nio.file.Path;
 
 public interface StorageService {
 
-  void store(MultipartFile file);
+    void store(MultipartFile file);
 
-  void delete(Path location);
+    void delete(Path location);
 }

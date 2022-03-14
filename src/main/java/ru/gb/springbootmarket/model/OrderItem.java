@@ -18,26 +18,26 @@ import javax.persistence.Table;
 @Data
 public class OrderItem {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
+    private Long id;
 
-  @Column(name = "price")
-  private Float price;
+    @Column(name = "price")
+    private Float price;
 
-  @Column(name = "quantity")
-  private Integer quantity;
+    @Column(name = "quantity")
+    private Integer quantity;
 
-  @Enumerated
-  @Column(columnDefinition = "smallint")
-  private StorageStatus storageStatus;
+    @Enumerated
+    @Column(columnDefinition = "smallint")
+    private StorageStatus storageStatus;
 
-  @ManyToOne
-  @JoinColumn(name = "product_id")
-  private Product product;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
-  @ManyToOne
-  @JoinColumn(name = "order_id")
-  private Order order;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 }

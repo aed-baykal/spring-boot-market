@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="currentPage='Список покупок'">
 <head th:include="fragments/common-head">
-    <title>Список покупок</title>
 </head>
 <body>
 <nav th:replace="fragments/nav-bar::nav-bar">

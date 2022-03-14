@@ -16,6 +16,7 @@ import ru.gb.springbootmarket.service.OrderItemService;
 import ru.gb.springbootmarket.service.OrderService;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,24 +47,30 @@ public class ManagerController {
 
     @PostMapping("/change/{id}")
     @Transactional
-    public String changeStatus(@PathVariable Long id, @Valid Order order, BindingResult bindingResult) {
+    public String changeStatus(@PathVariable Long id,
+                               @Valid Order order,
+                               BindingResult bindingResult,
+                               Principal principal) {
         if (bindingResult.hasErrors()) {
             return "management/change_order_status_form";
         }
         Order order1 = orderService.getOrderById(id);
+        order1.setManager(principal.getName());
         order1.setOrderStatus(order.getOrderStatus());
         orderService.save(order1);
         return "redirect:/management";
     }
 
     @GetMapping("/items_by_id/{id}")
-    public String getAllOrderItemsByOrderId(@PathVariable Long id, Model model) {
+    public String getAllOrderItemsByOrderId(@PathVariable Long id, Model model, Principal principal) {
         Order order = orderService.getOrderById(id);
-        order.setOrderStatus(OrderStatus.IN_WORK);
+        if (order.getOrderStatus() == OrderStatus.NEW) order.setOrderStatus(OrderStatus.IN_WORK);
+        order.setManager(principal.getName());
         orderService.save(order);
         List<OrderItem> orderItems = orderService.getOrderById(id).getOrderItems().stream()
                 .filter(orderItem2 -> orderItem2.getStorageStatus().equals(StorageStatus.IN_SELECTION)).collect(Collectors.toList());;
         model.addAttribute("orderItems", orderItems);
+        model.addAttribute("order", order);
         return "management/order_items";
     }
 

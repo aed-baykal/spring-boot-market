@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="currentPage='Панель менеджера'">
 <head th:include="fragments/common-head">
-    <title>Панель менеджера</title>
 </head>
 <body>
 <nav th:replace="fragments/nav-bar::nav-bar">
@@ -28,7 +28,7 @@
             <td th:text="${order.contactEmail}"></td>
             <td th:text="${order.address}"></td>
             <td th:text="${order.price}"></td>
-            <td th:text="${order.orderStatus}"></td>
+            <td th:text="${order.orderStatus.getName()}"></td>
             <td th:text="${order.shippingMethod}"></td>
             <td th:text="${order.creationTime}"></td>
             <td th:text="${order.deliverTime}"></td>

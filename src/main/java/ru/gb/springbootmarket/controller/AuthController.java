@@ -51,7 +51,7 @@ public class AuthController {
         }
         if (password.equals(password2)) {
             try {
-                registerService.sighUp(username, password, email, adress);
+                registerService.signUp(username, password, email, adress);
                 return "registration/register-confirm";
             } catch (IllegalStateException e) {
                 model.addAttribute("illegalStateException", e);

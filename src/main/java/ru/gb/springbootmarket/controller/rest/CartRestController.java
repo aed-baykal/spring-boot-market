@@ -9,28 +9,32 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.gb.springbootmarket.dto.Cart;
 import ru.gb.springbootmarket.service.CartService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 @RequestMapping("/cart")
 public class CartRestController {
 
-    private CartService cartService;
+    private final CartService cartService;
 
     public CartRestController(CartService cartService) {
         this.cartService = cartService;
     }
 
     @GetMapping// GET cart
-    public Cart getCart() {
-        return cartService.getCartForCurrentUser();
+    public Cart getCart(HttpServletRequest request, HttpServletResponse response) {
+        cartService.setCookie(request, response);
+        return cartService.getCartForCurrentUser(request);
     }
 
     @PostMapping("/product/{id}") // POST cart/product/1
-    public Cart addProduct(@PathVariable Long id) {
-        return cartService.addProductById(id);
+    public Cart addProduct(@PathVariable Long id, HttpServletRequest request) {
+        return cartService.addProductById(id, request);
     }
 
     @DeleteMapping("/product/{id}") // DELETE cart/product/1
-    public Cart deleteProduct(@PathVariable Long id) {
-        return cartService.removeProductById(id);
+    public Cart deleteProduct(@PathVariable Long id, HttpServletRequest request) {
+        return cartService.removeProductById(id, request);
     }
 }

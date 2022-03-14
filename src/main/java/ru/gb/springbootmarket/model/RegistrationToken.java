@@ -18,24 +18,24 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 public class RegistrationToken {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
+    private Long id;
 
-  @Column(name = "token")
-  private String token;
+    @Column(name = "token")
+    private String token;
 
-  @Column(name = "expired_at")
-  private LocalDateTime expiredAt;
+    @Column(name = "expired_at")
+    private LocalDateTime expiredAt;
 
-  @ManyToOne
-  @JoinColumn(name = "user_id")
-  private MarketUser marketUser;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private MarketUser marketUser;
 
-  public RegistrationToken(String token, LocalDateTime expiredAt, MarketUser marketUser) {
-    this.token = token;
-    this.expiredAt = expiredAt;
-    this.marketUser = marketUser;
-  }
+    public RegistrationToken(String token, LocalDateTime expiredAt, MarketUser marketUser) {
+        this.token = token;
+        this.expiredAt = expiredAt;
+        this.marketUser = marketUser;
+    }
 }

@@ -7,5 +7,5 @@ import ru.gb.springbootmarket.model.Authority;
 @Repository
 public interface AuthorityRepository extends JpaRepository<Authority, Long> {
 
-  Authority findByName(String name);
+    Authority findByName(String name);
 }

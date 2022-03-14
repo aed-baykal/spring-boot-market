@@ -1,30 +1,32 @@
 spring:
-  datasource:
-    driver-class-name: org.h2.Driver
-    # Для работы с h2 в файловом режиме пропишите в похожем виде:
-    #url: jdbc:h2:file:C:/Users/.../TestDataBase
-    url: jdbc:h2:file:/home/andrey/IntellijWorkPlace/spring-boot-market/src/main/resources/db/market-db;MODE=PostgreSQL
-    username: admin
-    password: admin
-  jpa:
-    show-sql: true
-  h2:
-    console:
-      enabled: true
-  mail:
-    host: localhost
-    port: 1025
-    username: hello
-    password: hello
-    properties:
-      mail:
-        smtp:
-          ssl:
-            trust: "*"
-          auth: true
-          starttls:
-            enable: true
-          connectiontimeout: 5000
-          timeout: 3000
-          writetimeout: 5000
+    datasource:
+        driver-class-name: org.h2.Driver
+        # Для работы с h2 в файловом режиме пропишите в похожем виде:
+        #url: jdbc:h2:file:C:/Users/.../TestDataBase
+        url: jdbc:h2:file:/home/andrey/IntellijWorkPlace/spring-boot-market/src/main/resources/db/market-db;MODE=PostgreSQL
+        username: admin
+        password: admin
+    jpa:
+        show-sql: true
+    h2:
+        console:
+            enabled: true
+    mail:
+        host: localhost
+        #    host: maildev
+        #    port: 1025
+        port: 25
+        username: hello
+        password: hello
+        properties:
+            mail:
+                smtp:
+                    ssl:
+                        trust: "*"
+                    auth: true
+                    starttls:
+                        enable: true
+                    connectiontimeout: 5000
+                    timeout: 3000
+                    writetimeout: 5000
 location: media
