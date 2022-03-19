@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="currentPage='Работа с банерами'">
+<head th:include="fragments/common-head">
+</head>
+<body class="content">
+<nav th:replace="fragments/nav-bar::nav-bar">
+</nav>
+<div class="container">
+    <h3>Форма работы с банерами</h3>
+    <div class="row">
+        <form method="post" th:action="@{/admin/baner/add}" class="col-md-6" th:object="${baner}" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="name" class="form-label">Название</label>
+                <input type="text" class="form-control" id="name" th:field="*{title}">
+                <br>
+                <div th:each="err : ${#fields.errors('title')}" th:text="${err}" class="alert alert-danger">
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">Изображение</label>
+                <input type="file" class="form-control" id="image" name="image">
+                <br>
+            </div>
+            <a th:href="@{'/admin/baner'}" class="btn btn-secondary">Отмена</a>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

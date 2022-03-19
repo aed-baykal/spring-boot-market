@@ -15,6 +15,8 @@
                 </li>
                 <li sec:authorize="hasRole('ADMIN')" class="nav-item">
                     <a class="nav-link" th:href="@{'/admin'}">Администрирование</a>
+                <li sec:authorize="hasRole('ADMIN')" class="nav-item">
+                    <a class="nav-link" th:href="@{'/admin/baner'}">Банеры</a>
                 </li>
                 <li sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="nav-item">
                     <a class="nav-link" th:href="@{'/management'}">Менеджмент</a>
