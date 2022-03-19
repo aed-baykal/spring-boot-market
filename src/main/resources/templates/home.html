@@ -3,26 +3,23 @@
       th:with="currentPage='Главная'">
 <head th:include="fragments/common-head">
 </head>
-<body>
+<body class="content">
 <nav th:replace="fragments/nav-bar::nav-bar">
 </nav>
-<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-    <ol class="carousel-indicators">
-        <li data-slide-to="0" class="active"></li>
-        <li data-slide-to="1"></li>
-        <li data-slide-to="2"></li>
-        <li data-slide-to="3"></li>
-    </ol>
+<div id="carouselPromo" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img class="d-block w-100" th:src="@{/images/banner.png}" src="..." alt="Акция 1">
+            <img class="d-block w-100" th:src="@{${baner_active.imageUrl}}" src="..." alt="Акция 1">
+        </div>
+        <div th:each="baner : ${baners}" class="carousel-item">
+            <img class="d-block w-100" th:src="@{${baner.imageUrl}}" src="..." alt="Акция 2">
         </div>
     </div>
-    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+    <a class="carousel-control-prev" href="#carouselPromo" role="button" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="sr-only">Назад</span>
     </a>
-    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+    <a class="carousel-control-next" href="#carouselPromo" role="button" data-bs-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="sr-only">Вперед</span>
     </a>
@@ -48,5 +45,7 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 </html>

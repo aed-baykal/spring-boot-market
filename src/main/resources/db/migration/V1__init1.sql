@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS categories (
 
 CREATE TABLE IF NOT EXISTS  products (
     id          BIGSERIAL PRIMARY KEY,
-    title       VARCHAR(255) NOT NULL,
+    title       VARCHAR(255) NOT NULL UNIQUE,
     description TEXT,
     image_url   VARCHAR(255),
     price       FLOAT NOT NULL,
@@ -63,14 +63,19 @@ CREATE TABLE IF NOT EXISTS orders (
 );
 
 CREATE TABLE IF NOT EXISTS order_items (
-    id BIGSERIAL PRIMARY KEY,
-    order_id BIGINT REFERENCES orders (id),
-    product_id BIGINT REFERENCES products (id),
-    price DOUBLE NOT NULL ,
-    quantity INT NOT NULL,
+    id          BIGSERIAL PRIMARY KEY,
+    order_id    BIGINT REFERENCES orders (id),
+    product_id  BIGINT REFERENCES products (id),
+    price       DOUBLE NOT NULL ,
+    quantity    INT NOT NULL,
     storage_status SMALLINT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS  baners(
+    id        BIGSERIAL PRIMARY KEY,
+    title     VARCHAR(255) NOT NULL UNIQUE,
+    image_url VARCHAR(255)
+);
 
 INSERT INTO customer_contacts (email, address)
 VALUES ('admin@admin.ru', 'Электросталь, ул. Захарченко, 7А'),

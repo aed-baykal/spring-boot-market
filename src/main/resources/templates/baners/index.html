@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:with="currentPage='Админ панель банеры'">
+<head th:include="fragments/common-head">
+</head>
+<body class="content">
+<nav th:replace="fragments/nav-bar::nav-bar">
+</nav>
+<div class="container">
+    <h3>Список банеров</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <td>id</td>
+            <td>Название</td>
+            <td></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="baner : ${baners}">
+            <td th:text="${baner.id}">1</td>
+            <td th:text="${baner.title}">Акция</td>
+            <td><form method="post" th:action="@{${'/admin/baner/delete/' + baner.id}}">
+                <button type="submit" class="btn btn-danger">x</button>
+            </form></td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{'/admin/baner/add'}" class="btn btn-primary">Добавить</a>
+</div>
+</body>
+</html>

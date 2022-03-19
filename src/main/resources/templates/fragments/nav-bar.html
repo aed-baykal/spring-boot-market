@@ -1,4 +1,4 @@
-<nav class="navbar navbar-dark bg-dark navbar-expand" th:fragment="nav-bar">
+<nav class="navbar navbar-dark bg-dark navbar-expand head" th:fragment="nav-bar">
     <div class="container">
         <a class="navbar-brand" href="#" th:href="@{'/'}">Магазин</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,13 +15,23 @@
                 </li>
                 <li sec:authorize="hasRole('ADMIN')" class="nav-item">
                     <a class="nav-link" th:href="@{'/admin'}">Администрирование</a>
+                <li sec:authorize="hasRole('ADMIN')" class="nav-item">
+                    <a class="nav-link" th:href="@{'/admin/baner'}">Банеры</a>
                 </li>
                 <li sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="nav-item">
                     <a class="nav-link" th:href="@{'/management'}">Менеджмент</a>
                 </li>
             </ul>
         </div>
-
+        <div class="form-inline">
+            <form method="get" th:action="@{/search}" class="col-md-10">
+                <div class="input-group mb-10">
+                    <label for="search" class="form-label">поиск</label>
+                    <input type="text" class="form-control" placeholder="Поиск товара" id="search" name="search">
+                    <button class="btn btn-outline-secondary" type="submit">поиск</button>
+                </div>
+            </form>
+        </div>
         <i class="fas fa-shopping-bag shopping-cart-badge" onclick="displayCart()"></i>
 
         <div class="form-inline">

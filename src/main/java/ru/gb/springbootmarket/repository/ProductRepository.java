@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import ru.gb.springbootmarket.model.Product;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -14,4 +15,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("select p from Product p where p.imageUrl = :imageUrl")
     List<Product> findAllByImageUrl(String imageUrl);
+
+    Optional<Product> findByTitle(String title);
 }
