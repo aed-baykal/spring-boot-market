@@ -12,11 +12,10 @@
     <div class="row">
         <form method="post" th:action="@{${'/management/item/' + orderItem.id}}" class="col-md-6" th:object="${orderItem}">
             <div class="mb-3">
-                <label for="name" class="form-label">Статус</label>
-                <input type="text" class="form-control" id="name" th:field="*{storageStatus}">
-                <br>
-                <div th:each="err : ${#fields.errors('storageStatus')}" th:text="${err}" class="alert alert-danger">
-                </div>
+                <label for="status" class="form-label">Статус</label>
+                <select class="form-select" aria-label="Status" id="status" th:field="*{storageStatus}">
+                    <option th:each="status : ${statuses}" th:value="${status}" th:text="${status.getName()}"></option>
+                </select>
             </div>
             <a th:href="@{'/management'}" class="btn btn-secondary">Отмена</a>
             <button type="submit" class="btn btn-primary">Сохранить</button>

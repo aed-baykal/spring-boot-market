@@ -23,13 +23,13 @@ public class OrderController {
 
     @GetMapping
     public String getOrderPage(Principal principal) {
-        if (principal == null) return "order";
-        return "order-next";
+        if (principal == null) return "order/order";
+        return "order/order-next";
     }
 
     @GetMapping("/success")
     public String getOrderSuccessPage() {
-        return "order-success";
+        return "order/order-success";
     }
 
     @PostMapping
@@ -39,7 +39,7 @@ public class OrderController {
             return "redirect:/order/success";
         } catch (IllegalStateException e) {
             model.addAttribute("illegalStateException", e);
-            return "order";
+            return "order/order";
         }
     }
 
@@ -50,7 +50,7 @@ public class OrderController {
             return "redirect:/order/success";
         } catch (IllegalStateException e) {
             model.addAttribute("illegalStateException", e);
-            return "order-next";
+            return "order/order-next";
         }
     }
 

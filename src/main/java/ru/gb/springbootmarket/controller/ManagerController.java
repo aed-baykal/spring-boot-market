@@ -17,8 +17,8 @@ import ru.gb.springbootmarket.service.OrderService;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/management")
@@ -41,6 +41,8 @@ public class ManagerController {
 
     @GetMapping("/change/{id}")
     public String changeOrderStatus(@PathVariable Long id, Model model) {
+        List<OrderStatus> statuses = Arrays.asList(OrderStatus.values());;
+        model.addAttribute("statuses", statuses);
         model.addAttribute("order", orderService.getOrderById(id));
         return "management/change_order_status_form";
     }
@@ -67,8 +69,7 @@ public class ManagerController {
         if (order.getOrderStatus() == OrderStatus.NEW) order.setOrderStatus(OrderStatus.IN_WORK);
         order.setManager(principal.getName());
         orderService.save(order);
-        List<OrderItem> orderItems = orderService.getOrderById(id).getOrderItems().stream()
-                .filter(orderItem2 -> orderItem2.getStorageStatus().equals(StorageStatus.IN_SELECTION)).collect(Collectors.toList());;
+        List<OrderItem> orderItems = orderService.getOrderById(id).getOrderItems();
         model.addAttribute("orderItems", orderItems);
         model.addAttribute("order", order);
         return "management/order_items";
@@ -76,6 +77,8 @@ public class ManagerController {
 
     @GetMapping("/item/{id}")
     public String changeOrderItemStatus(@PathVariable Long id, Model model) {
+        List<StorageStatus> statuses = Arrays.asList(StorageStatus.values());
+        model.addAttribute("statuses", statuses);
         model.addAttribute("orderItem", orderItemService.getOrderItemById(id));
         return "management/change_orderitem_status_form";
     }
@@ -89,10 +92,11 @@ public class ManagerController {
         OrderItem orderItem1 = orderItemService.getOrderItemById(id);
         orderItem1.setStorageStatus(orderItem.getStorageStatus());
         orderItemService.save(orderItem1);
-        List<OrderItem> orderItems = orderService.getOrderById(orderItem1.getOrder().getId()).getOrderItems().stream()
-                .filter(orderItem2 -> orderItem2.getStorageStatus().equals(StorageStatus.IN_SELECTION)).collect(Collectors.toList());
+        List<OrderItem> orderItems = orderService.getOrderById(orderItem1.getOrder().getId()).getOrderItems();
         model.addAttribute("orderItems", orderItems);
-        if (orderItems.isEmpty()) {
+        model.addAttribute("order", orderItem1.getOrder());
+        if (orderItems.stream().noneMatch(orderItem2 ->
+                orderItem2.getStorageStatus().getName().equals(StorageStatus.IN_SELECTION.getName()))) {
             Order order = orderService.getOrderById(orderItem1.getOrder().getId());
             order.setOrderStatus(OrderStatus.SHIPPED);
             orderService.save(order);
