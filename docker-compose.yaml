@@ -9,11 +9,12 @@ services:
     maildev:
         image: maildev/maildev
         ports:
-            - "1080:80"
-            - "25:25"
+            - "1080:1080"
+            - "1025:1025"
 
     redis:
         image: 'bitnami/redis:latest'
+        container_name: redis
         environment:
             - ALLOW_EMPTY_PASSWORD=yes
             - REDIS_PORT_NUMBER=7000
