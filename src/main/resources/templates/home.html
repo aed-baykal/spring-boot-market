@@ -34,7 +34,6 @@
                     <h5 class="card-title">
                         <a class="link-dark" th:href="@{${'/info/' + product.id}}" th:text="${product.title}">Подробнее</a>
                     </h5>
-
                     <p th:text="${product.category}" class="card-text">Категория</p>
                     <p th:text="${product.price}" class="card-text mt-auto">Цена</p>
                     <button th:attr="data-product-id=${product.id}" class="btn btn-success w-100" onclick="onClickAddToCart(this)">

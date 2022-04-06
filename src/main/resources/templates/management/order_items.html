@@ -22,7 +22,7 @@
             <td th:text="${orderItem.id}"></td>
             <td th:text="${orderItem.product.title}"></td>
             <td th:text="${orderItem.quantity}"></td>
-            <td><a th:href="@{${'/management/item/' + orderItem.id}}" th:text="${orderItem.storageStatus}"></a></td>
+            <td><a th:href="@{${'/management/item/' + orderItem.id}}" th:text="${orderItem.storageStatus.getName()}"></a></td>
         </tr>
         </tbody>
     </table>

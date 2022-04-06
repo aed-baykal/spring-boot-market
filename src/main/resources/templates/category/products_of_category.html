@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:with="currentPage='Категории'">
+      th:with="currentPage='Продукты из категории'">
 <head th:include="fragments/common-head">
 </head>
 <body class="content">
@@ -16,11 +16,10 @@
                     <h5 class="card-title">
                         <a class="link-dark" th:href="@{${'/info/' + product.id}}" th:text="${product.title}">Подробнее</a>
                     </h5>
-
                     <p th:text="${product.category.title}" class="card-text">Категория</p>
                     <p th:text="${product.price}" class="card-text mt-auto">Цена</p>
                 </div>
-                <button th:attr="data-product-id=${product.id}" class="cart-button w-100" onclick="onClickAddToCart(this)">
+                <button th:attr="data-product-id=${product.id}" class="btn btn-success w-100" onclick="onClickAddToCart(this)">
                     В корзину
                 </button>
             </div>

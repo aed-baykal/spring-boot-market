@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.gb.springbootmarket.model.Order;
 import ru.gb.springbootmarket.model.OrderItem;
 import ru.gb.springbootmarket.service.OrderService;
+import ru.gb.springbootmarket.service.UserService;
 
 import java.util.List;
 
@@ -17,9 +18,11 @@ import java.util.List;
 public class MarketUserController {
 
     private final OrderService orderService;
+    private final UserService userService;
 
-    public MarketUserController(OrderService orderService) {
+    public MarketUserController(OrderService orderService, UserService userService) {
         this.orderService = orderService;
+        this.userService = userService;
     }
 
     @GetMapping("/{id}")
@@ -34,6 +37,12 @@ public class MarketUserController {
         List<OrderItem> orderItems = orderService.getOrderById(id).getOrderItems();
         model.addAttribute("orderItems", orderItems);
         return "market_user/order_items";
+    }
+
+    @GetMapping("/user/{userName}")
+    public String findUserByUsername(@PathVariable String userName, Model model) {
+        model.addAttribute("user", userService.findUserByUserName(userName));
+        return "market_user/user_info";
     }
 
 }

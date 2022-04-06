@@ -19,7 +19,7 @@
                         <div class="card-body">
                             <h2 th:text="${product.title}" class="card-text"></h2>
                             <p th:text="${'Цена: ' + product.price}" class="card-text"><small class="text-muted"></small></p>
-                            <button th:attr="data-product-id=${product.id}" class="cart-button" onclick="onClickAddToCart(this)">
+                            <button th:attr="data-product-id=${product.id}" class="btn btn-success w-100" onclick="onClickAddToCart(this)">
                                 Добавить в корзину
                             </button>
                         </div>

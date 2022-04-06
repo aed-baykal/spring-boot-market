@@ -31,7 +31,7 @@
             <td th:text="${order.price}"></td>
             <td><a th:href="@{${'/management/change/' + order.id}}"
                    th:text="${order.orderStatus.getName() + ' менеджер ' + order.manager}"></a></td>
-            <td th:text="${order.shippingMethod}"></td>
+            <td th:text="${order.shippingMethod.getName()}"></td>
             <td th:text="${order.creationTime}"></td>
             <td th:text="${order.deliverTime}"></td>
             <td><a th:href="@{${'/management/items_by_id/' + order.id}}">Позиции</a></td>

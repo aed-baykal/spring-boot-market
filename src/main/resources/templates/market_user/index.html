@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:with="currentPage='Панель менеджера'">
+      th:with="currentPage='История Заказов'">
 <head th:include="fragments/common-head">
 </head>
 <body class="content">
@@ -29,7 +29,7 @@
             <td th:text="${order.address}"></td>
             <td th:text="${order.price}"></td>
             <td th:text="${order.orderStatus.getName()}"></td>
-            <td th:text="${order.shippingMethod}"></td>
+            <td th:text="${order.shippingMethod.getName()}"></td>
             <td th:text="${order.creationTime}"></td>
             <td th:text="${order.deliverTime}"></td>
             <td><a th:href="@{${'/market_user/items_by_id/' + order.id}}">Позиции</a></td>

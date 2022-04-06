@@ -21,15 +21,15 @@ public class CategoryController {
     @GetMapping
     public String getAllCategories(Model model) {
         model.addAttribute("categories", categoryRepository.findAll());
-        return "categories";
+        return "category/categories";
     }
 
     @GetMapping
     @RequestMapping("/{id}")
-    public String getAllCategories(@PathVariable Long id, Model model) {
+    public String getProductsByCategoryId(@PathVariable Long id, Model model) {
         Category category = categoryRepository.findByIdFetchProducts(id);
         model.addAttribute("title", category.getTitle());
         model.addAttribute("products", category.getProducts());
-        return "product_list";
+        return "category/products_of_category";
     }
 }

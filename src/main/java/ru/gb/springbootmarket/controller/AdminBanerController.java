@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import ru.gb.springbootmarket.model.Baner;
-import ru.gb.springbootmarket.model.Product;
 import ru.gb.springbootmarket.service.BanerService;
 import ru.gb.springbootmarket.service.StorageService;
 
@@ -62,11 +61,6 @@ public class AdminBanerController {
     @Transactional
     public String deleteBaner(@PathVariable Long id) {
         Baner baner = banerService.findById(id).orElse(null);
-//        if ((product != null) && (product.getImageUrl() != null)) {
-//            List<Product> productList = productService.getAllByImageUrl(product.getImageUrl());
-//            Path location = Paths.get(product.getImageUrl());
-//            if (productList.size() == 1) storageService.delete(location);
-//        }
         if ((baner != null) && (baner.getImageUrl() != null)) {
             List<Baner> banerList = banerService.getAllByImageUrl(baner.getImageUrl());
             Path location = Paths.get(baner.getImageUrl());

@@ -8,6 +8,7 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.stereotype.Service;
 import ru.gb.springbootmarket.converter.ProductMapper;
@@ -52,9 +53,14 @@ public class ProductElasticSearchService {
     }
 
     public void indexProduct(ProductDto productDto) throws IOException {
-        IndexRequest request = new IndexRequest(INDEX_NAME);
-        request.source(mapper.writeValueAsString(productDto), XContentType.JSON);
-        client.index(request, RequestOptions.DEFAULT);
+        SearchRequest searchRequest = new SearchRequest();
+        SearchResponse response = client.search(searchRequest, RequestOptions.DEFAULT);
+        SearchHit[] searchHits = response.getHits().getHits();
+        if (searchHits.length == 0) {
+            IndexRequest request = new IndexRequest(INDEX_NAME);
+            request.source(mapper.writeValueAsString(productDto), XContentType.JSON);
+            client.index(request, RequestOptions.DEFAULT);
+        }
     }
 
     public List<ProductDto> search(String searchString) throws IOException {
