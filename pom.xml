@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ru.gb</groupId>
-	<artifactId>spring-boot-market</artifactId>
+	<artifactId>spring-boot-market-algorythm</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring-boot-market</name>
 	<description>Demo project for Spring Boot</description>
